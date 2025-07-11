@@ -1,6 +1,6 @@
 import pandas as pd
 import dash
-from dash import html
+from dash import dcc, html
 from visualizaciones.mapa_coropletico import get_mapa
 from visualizaciones.grafico_de_barras_condiciones_climaticas import get_barras
 from visualizaciones.boxplot import get_boxplot
@@ -26,27 +26,53 @@ app = dash.Dash(__name__)
 server = app.server
 
 
+# ...importaciones y carga de datos...
+
+# ...importaciones y carga de datos...
+
 app.layout = html.Div(
     style={
         'background': 'linear-gradient(135deg, #43cea2 0%, #185a9d 100%)',
         'fontFamily': 'Montserrat, sans-serif',
         'minHeight': '100vh',
-        'padding': '0',
-        'margin': '0'
+        'padding': '20px',
+        'display': 'grid',
+        'gridTemplateColumns': '1fr 1fr',
+        'gridTemplateRows': '100px 1fr 1fr',
+        'gap': '20px'
+        # Elimina 'height' y 'overflow'
     },
     children=[
-        html.H1(
-            "Dashboard de Análisis de Accidentes Viales en EE.UU.",
-            className="animate__animated animate__fadeInDown",
-            style={'textAlign': 'center', 'color': '#fff', 'marginTop': '30px', 'textShadow': '2px 2px 8px #185a9d'}
+        html.Div(
+            html.H1(
+                "Dashboard de Accidentes Viales en EE.UU.",
+                className="animate__animated animate__fadeInDown",
+                style={'textAlign': 'center', 'color': '#fff', 'margin': '0', 'textShadow': '2px 2px 8px #185a9d'}
+            ),
+            style={'gridColumn': '1 / span 2', 'gridRow': '1', 'background': 'none'}
         ),
-        get_mapa(df_sample),
-        get_barras(df_sample),
-        get_boxplot(df_sample),
-        get_treemap(df_sample),
+        html.Div(get_mapa(df_sample), style={
+            'gridColumn': '1', 'gridRow': '2',
+            'background': 'rgba(255,255,255,0.95)', 'borderRadius': '15px',
+            'minHeight': '350px', 'display': 'flex', 'alignItems': 'center', 'justifyContent': 'center'
+        }),
+        html.Div(get_barras(df_sample), style={
+            'gridColumn': '2', 'gridRow': '2',
+            'background': 'rgba(255,255,255,0.95)', 'borderRadius': '15px',
+            'minHeight': '350px', 'display': 'flex', 'alignItems': 'center', 'justifyContent': 'center'
+        }),
+        html.Div(get_boxplot(df_sample), style={
+            'gridColumn': '1', 'gridRow': '3',
+            'background': 'rgba(255,255,255,0.95)', 'borderRadius': '15px',
+            'minHeight': '350px', 'display': 'flex', 'alignItems': 'center', 'justifyContent': 'center'
+        }),
+        html.Div(get_treemap(df_sample), style={
+            'gridColumn': '2', 'gridRow': '3',
+            'background': 'rgba(255,255,255,0.95)', 'borderRadius': '15px',
+            'minHeight': '350px', 'display': 'flex', 'alignItems': 'center', 'justifyContent': 'center'
+        }),
     ]
 )
-
 
 # Callback para el boxplot interactivo
 from dash import Input, Output
