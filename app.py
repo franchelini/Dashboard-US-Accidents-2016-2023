@@ -69,6 +69,45 @@ infra_vars = ['Amenity', 'Bump', 'Crossing', 'Give_Way', 'Junction', 'No_Exit',
               'Railway', 'Roundabout', 'Station', 'Stop', 'Traffic_Calming', 
               'Traffic_Signal', 'Turning_Loop']
 
+# VISUALIZACIÓN 5: GRÁFICO DE BARRAS DE ACCIDENTES POR CIUDAD
+city_counts = df_sample['City'].value_counts().nlargest(20).reset_index()
+city_counts.columns = ['City', 'Accident_Count']
+
+fig_bar_city = px.bar(
+    city_counts,
+    x='City',
+    y='Accident_Count',
+    title="Top 20 Ciudades con Más Accidentes",
+    labels={'City': 'Ciudad', 'Accident_Count': 'Cantidad de Accidentes'},
+    color='Accident_Count',
+    color_continuous_scale=px.colors.sequential.Viridis
+)
+fig_bar_city.update_layout(
+    title_x=0.5,
+    xaxis_tickangle=-45
+)
+
+# VISUALIZACIÓN 6: GRÁFICO DE LÍNEAS DE ACCIDENTES POR MES
+df_sample['YearMonth'] = df_sample['Start_Time'].dt.to_period('M').astype(str)
+monthly_counts = df_sample['YearMonth'].value_counts().sort_index().reset_index()
+monthly_counts.columns = ['YearMonth', 'Accident_Count']
+
+fig_line_monthly = px.line(
+    monthly_counts,
+    x='YearMonth',
+    y='Accident_Count',
+    title='Tendencia Mensual de Accidentes',
+    labels={'YearMonth': 'Mes', 'Accident_Count': 'Cantidad de Accidentes'},
+    markers=True
+)
+fig_line_monthly.update_layout(
+    title_x=0.5,
+    xaxis_tickangle=-45,
+    height=400,
+    plot_bgcolor='white',
+    margin={"r":30,"t":60,"l":30,"b":30}
+)
+
 # Calcular frecuencia y % nocturno para cada infraestructura
 infra_data = []
 for var in infra_vars:
@@ -180,6 +219,24 @@ app.layout = html.Div(
                 dcc.Graph(id='treemap-infra', figure=fig_treemap),
                 html.P("Tamaño: Frecuencia de accidentes | Color: % de accidentes nocturnos",
                       style={'textAlign': 'center', 'color': '#777', 'fontStyle': 'italic', 'marginTop': '15px'})
+            ],
+            style={'padding': '20px', 'backgroundColor': 'white', 'borderRadius': '10px', 'margin': '20px'}
+        ),
+        # Contenedor para el gráfico de barras de ciudades
+        html.Div(
+            className="graph-container",
+            children=[
+                html.H2("Ciudades con Mayor Cantidad de Accidentes", style={'textAlign': 'center', 'color': '#555'}),
+                dcc.Graph(id='city-bar', figure=fig_bar_city)
+            ],
+            style={'padding': '20px', 'backgroundColor': 'white', 'borderRadius': '10px', 'margin': '20px'}
+        ),
+        # Contenedor para la tendencia mensual de accidentes
+        html.Div(
+            className="graph-container",
+            children=[
+                html.H2("Tendencia Mensual de Accidentes", style={'textAlign': 'center', 'color': '#555'}),
+                dcc.Graph(id='line-monthly', figure=fig_line_monthly)
             ],
             style={'padding': '20px', 'backgroundColor': 'white', 'borderRadius': '10px', 'margin': '20px'}
         ),
