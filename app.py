@@ -6,7 +6,15 @@ from visualizaciones.grafico_de_barras_condiciones_climaticas import get_barras
 from visualizaciones.boxplot import get_boxplot
 from visualizaciones.treemap import get_treemap
 
-# Cargar el dataset
+
+external_stylesheets = [
+    "https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap",
+    "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+]
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+server = app.server
+
+# Cargar el dataset con datos aleatorios de accidentes viales en EE.UU. solo son 100,000 filas, sino PC hace PUM.
 try:
     df = pd.read_csv('US_Accidents_March23.csv')
     df_sample = df.sample(n=100000, random_state=42)
@@ -17,12 +25,20 @@ except FileNotFoundError:
 app = dash.Dash(__name__)
 server = app.server
 
+
 app.layout = html.Div(
-    style={'backgroundColor': '#f0f0f0', 'fontFamily': 'sans-serif'},
+    style={
+        'background': 'linear-gradient(135deg, #43cea2 0%, #185a9d 100%)',
+        'fontFamily': 'Montserrat, sans-serif',
+        'minHeight': '100vh',
+        'padding': '0',
+        'margin': '0'
+    },
     children=[
         html.H1(
             "Dashboard de Análisis de Accidentes Viales en EE.UU.",
-            style={'textAlign': 'center', 'color': '#333'}
+            className="animate__animated animate__fadeInDown",
+            style={'textAlign': 'center', 'color': '#fff', 'marginTop': '30px', 'textShadow': '2px 2px 8px #185a9d'}
         ),
         get_mapa(df_sample),
         get_barras(df_sample),
@@ -30,6 +46,7 @@ app.layout = html.Div(
         get_treemap(df_sample),
     ]
 )
+
 
 # Callback para el boxplot interactivo
 from dash import Input, Output
