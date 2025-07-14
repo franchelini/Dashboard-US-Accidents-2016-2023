@@ -19,7 +19,6 @@ def create_dashboard_layout(df):
     
     with row1_col2:
         create_weather_section(df_filtered)
-        st.markdown('<div style="margin-top: 0.5rem;"></div>', unsafe_allow_html=True)
         create_severity_metrics(df_filtered)
     
     # FILA 2: 3 gráficos medianos
@@ -37,13 +36,18 @@ def create_dashboard_layout(df):
 def create_map_section(df):
     """Crear sección del mapa compacta"""
     with st.container():
-        st.markdown('<div class="chart-container" style="height: 350px;">', unsafe_allow_html=True)
+        st.markdown('<div class="chart-container" style="height: 400px; margin-bottom: 0.5rem;">', unsafe_allow_html=True)
         st.markdown('<div class="chart-title">🗺️ Distribución Geográfica</div>', unsafe_allow_html=True)
         
         # Generar mapa
         generator = ChartGenerator(df)
         fig_map = generator.generate_mapa()
-        fig_map.update_layout(height=300, margin=dict(l=0, r=0, t=20, b=0))
+        fig_map.update_layout(
+            height=360,
+            margin=dict(l=0, r=0, t=0, b=0),
+            showlegend=True,
+            legend=dict(orientation="h", yanchor="bottom", y=0)
+        )
         st.plotly_chart(fig_map, use_container_width=True)
         
         st.markdown('</div>', unsafe_allow_html=True)
@@ -51,7 +55,7 @@ def create_map_section(df):
 def create_weather_section(df):
     """Crear sección del clima compacta"""
     with st.container():
-        st.markdown('<div class="chart-container" style="height: 170px;">', unsafe_allow_html=True)
+        st.markdown('<div class="chart-container" style="height: 190px; margin-bottom: 0.5rem;">', unsafe_allow_html=True)
         st.markdown('<div class="chart-title">🌤️ Clima Top 10</div>', unsafe_allow_html=True)
         
         # Generar gráfico compacto
@@ -67,11 +71,12 @@ def create_weather_section(df):
             color_continuous_scale='Viridis'
         )
         fig_weather.update_layout(
-            height=140,
+            height=160,
             margin=dict(l=0, r=0, t=0, b=0),
             showlegend=False,
-            yaxis={'categoryorder':'total ascending'},
-            font=dict(size=10)
+            yaxis={'categoryorder':'total ascending', 'title': ''},
+            xaxis={'title': ''},
+            font=dict(size=9)
         )
         
         st.plotly_chart(fig_weather, use_container_width=True)
@@ -80,7 +85,7 @@ def create_weather_section(df):
 def create_severity_metrics(df):
     """Crear métricas de severidad compactas con explicación"""
     with st.container():
-        st.markdown('<div class="chart-container" style="height: 170px;">', unsafe_allow_html=True)
+        st.markdown('<div class="chart-container" style="height: 200px; margin-bottom: 0.5rem;">', unsafe_allow_html=True)
         st.markdown('<div class="chart-title">📊 Severidad por Niveles</div>', unsafe_allow_html=True)
         
         # Distribución de severidad con colores específicos
@@ -126,18 +131,18 @@ def create_severity_metrics(df):
         )
         
         fig_severity.update_layout(
-            height=140,
+            height=170,
             margin=dict(l=0, r=0, t=0, b=0),
             showlegend=True,
             legend=dict(
                 orientation="h", 
                 yanchor="bottom", 
-                y=-0.2, 
+                y=-0.15, 
                 xanchor="center", 
                 x=0.5,
-                font=dict(size=8)
+                font=dict(size=7)
             ),
-            font=dict(size=10)
+            font=dict(size=9)
         )
         
         st.plotly_chart(fig_severity, use_container_width=True)
@@ -146,7 +151,7 @@ def create_severity_metrics(df):
 def create_cities_section(df):
     """Crear sección de ciudades compacta"""
     with st.container():
-        st.markdown('<div class="chart-container">', unsafe_allow_html=True)
+        st.markdown('<div class="chart-container" style="height: 280px; margin-bottom: 0.5rem;">', unsafe_allow_html=True)
         st.markdown('<div class="chart-title">🏙️ Top 15 Ciudades</div>', unsafe_allow_html=True)
         
         # Generar gráfico
@@ -161,11 +166,13 @@ def create_cities_section(df):
             color_continuous_scale='Plasma'
         )
         fig_cities.update_layout(
-            height=230,
+            height=240,
             margin=dict(l=0, r=0, t=0, b=0),
             xaxis_tickangle=-45,
             showlegend=False,
-            font=dict(size=9)
+            xaxis={'title': ''},
+            yaxis={'title': ''},
+            font=dict(size=8)
         )
         
         st.plotly_chart(fig_cities, use_container_width=True)
@@ -174,7 +181,7 @@ def create_cities_section(df):
 def create_temporal_section(df):
     """Crear sección temporal compacta"""
     with st.container():
-        st.markdown('<div class="chart-container">', unsafe_allow_html=True)
+        st.markdown('<div class="chart-container" style="height: 280px; margin-bottom: 0.5rem;">', unsafe_allow_html=True)
         st.markdown('<div class="chart-title">📈 Tendencia Mensual</div>', unsafe_allow_html=True)
         
         # Análisis mensual
@@ -185,14 +192,17 @@ def create_temporal_section(df):
             monthly_counts,
             x='YearMonth',
             y='Count',
-            markers=True
+            markers=True,
+            line_shape='spline'
         )
         fig_temporal.update_layout(
-            height=230,
+            height=240,
             margin=dict(l=0, r=0, t=0, b=0),
             xaxis_tickangle=-45,
             showlegend=False,
-            font=dict(size=9)
+            xaxis={'title': ''},
+            yaxis={'title': ''},
+            font=dict(size=8)
         )
         
         st.plotly_chart(fig_temporal, use_container_width=True)
@@ -201,7 +211,7 @@ def create_temporal_section(df):
 def create_infrastructure_section(df):
     """Crear sección de infraestructura compacta"""
     with st.container():
-        st.markdown('<div class="chart-container">', unsafe_allow_html=True)
+        st.markdown('<div class="chart-container" style="height: 280px; margin-bottom: 0.5rem;">', unsafe_allow_html=True)
         st.markdown('<div class="chart-title">🏗️ Infraestructura</div>', unsafe_allow_html=True)
         
         # Generar treemap
@@ -235,17 +245,17 @@ def create_infrastructure_section(df):
                 hover_data=['Count', 'Porcentaje_Nocturno']
             )
             fig_treemap.update_layout(
-                height=230,
+                height=240,
                 margin=dict(l=0, r=0, t=0, b=0),
-                font=dict(size=9)
+                font=dict(size=8)
             )
             
             st.plotly_chart(fig_treemap, use_container_width=True)
             
             # Pequeña explicación
             st.markdown("""
-            <div style="font-size: 0.75rem; color: #6b7280; text-align: center; margin-top: 0.25rem;">
-                💡 Tamaño = Frecuencia | Color = % Accidentes Nocturnos
+            <div style="font-size: 0.7rem; color: #6b7280; text-align: center; margin-top: 0.25rem;">
+                💡 Tamaño = Frecuencia | Color = % Nocturnos
             </div>
             """, unsafe_allow_html=True)
         else:

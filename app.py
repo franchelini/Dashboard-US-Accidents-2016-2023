@@ -15,28 +15,29 @@ st.set_page_config(
 )
 
 # CSS personalizado para layout sin scroll
+
 st.markdown("""
 <style>
     .main > div {
-        padding-top: 0.5rem;
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-        padding-bottom: 0.5rem;
+        padding-top: 0.2rem;
+        padding-left: 0.2rem;
+        padding-right: 0.2rem;
+        padding-bottom: 0.2rem;
     }
     
     .dashboard-container {
         background-color: #f8f9fa;
-        padding: 0.5rem;
+        padding: 0.25rem;
         border-radius: 8px;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.25rem;
     }
     
     .metric-container {
         background: white;
-        padding: 0.5rem;
+        padding: 0.25rem;
         border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.25rem;
     }
     
     .chart-container {
@@ -45,7 +46,6 @@ st.markdown("""
         border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         margin-bottom: 0.5rem;
-        height: 280px;
         overflow: hidden;
     }
     
@@ -62,7 +62,7 @@ st.markdown("""
         background: #f3f4f6;
         padding: 0.25rem;
         border-radius: 4px;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.25rem;
     }
     
     .compact-metric {
@@ -104,8 +104,31 @@ st.markdown("""
     .streamlit-expanderContent {
         padding: 0.25rem;
     }
+    
+    /* Eliminar espacios extra */
+    .block-container {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+    
+    /* Ajustar espacios entre gráficos */
+    .stPlotlyChart {
+        margin-bottom: 0;
+    }
+    
+    /* Ocultar botones de plotly */
+    .modebar {
+        display: none !important;
+    }
+    
+    /* Reducir espacios entre columnas */
+    .stColumn > div {
+        padding-left: 0.25rem;
+        padding-right: 0.25rem;
+    }
 </style>
 """, unsafe_allow_html=True)
+
 
 # Cache para datos
 @st.cache_data
