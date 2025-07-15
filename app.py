@@ -5,6 +5,8 @@ from visualizaciones.mapa_coropletico import get_mapa
 from visualizaciones.grafico_de_barras_condiciones_climaticas import get_barras
 from visualizaciones.boxplot import get_boxplot
 from visualizaciones.treemap import get_treemap
+from visualizaciones.linea_tendencia_mensual import get_linea_tendencia_mensual
+from visualizaciones.grafico_de_barras_ciudades import get_barras_ciudades
 
 
 external_stylesheets = [
@@ -16,7 +18,8 @@ server = app.server
 
 # Cargar el dataset con datos aleatorios de accidentes viales en EE.UU. solo son 100,000 filas, sino PC hace PUM.
 try:
-    df = pd.read_csv('US_Accidents_March23.csv')
+    df = pd.read_csv('US_Accidents_March23.csv', parse_dates=['Start_Time'])
+    df['Start_Time'] = pd.to_datetime(df['Start_Time'], errors='coerce')
     df_sample = df.sample(n=100000, random_state=42)
 except FileNotFoundError:
     print("Error: Asegúrate de que el archivo 'US_Accidents_March23.csv' esté en la misma carpeta que app.py")
@@ -38,7 +41,7 @@ app.layout = html.Div(
         'padding': '20px',
         'display': 'grid',
         'gridTemplateColumns': '1fr 1fr',
-        'gridTemplateRows': '100px 1fr 1fr',
+        'gridTemplateRows': '100px 1fr 1fr 1fr',
         'gap': '20px'
         # Elimina 'height' y 'overflow'
     },
@@ -68,6 +71,16 @@ app.layout = html.Div(
         }),
         html.Div(get_treemap(df_sample), style={
             'gridColumn': '2', 'gridRow': '3',
+            'background': 'rgba(255,255,255,0.95)', 'borderRadius': '15px',
+            'minHeight': '350px', 'display': 'flex', 'alignItems': 'center', 'justifyContent': 'center'
+        }),
+        html.Div(dcc.Graph(figure=get_barras_ciudades(df_sample)), style={
+            'gridColumn': '1', 'gridRow': '4',
+            'background': 'rgba(255,255,255,0.95)', 'borderRadius': '15px',
+            'minHeight': '350px', 'display': 'flex', 'alignItems': 'center', 'justifyContent': 'center'
+        }),
+        html.Div(dcc.Graph(figure=get_linea_tendencia_mensual(df_sample)), style={
+            'gridColumn': '2', 'gridRow': '4',
             'background': 'rgba(255,255,255,0.95)', 'borderRadius': '15px',
             'minHeight': '350px', 'display': 'flex', 'alignItems': 'center', 'justifyContent': 'center'
         }),
