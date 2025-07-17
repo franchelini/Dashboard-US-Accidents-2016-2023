@@ -27,7 +27,6 @@ class DataLoader:
             ]
             
             # Cargar datos
-            ##df = pd.read_csv('D:\\US_Accidents_March23.csv\\US_Accidents_March23.csv', usecols=columns_needed)
             df = pd.read_csv('US_Accidents_March23.csv', usecols=columns_needed)
             progress_bar.progress(60)
             
