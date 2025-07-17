@@ -26,26 +26,26 @@ st.markdown("""
     }
     
     .dashboard-container {
-        background-color: #f8f9fa;
-        padding: 0.25rem;
+        background: transparent;
+        padding: 0.05rem;
         border-radius: 8px;
-        margin-bottom: 0.25rem;
+        margin-bottom: 0.05rem;
     }
     
     .metric-container {
-        background: white;
-        padding: 0.25rem;
+        background: transparent;
+        padding: 0.15rem;
         border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        margin-bottom: 0.25rem;
+        margin-bottom: 0.10rem;
     }
     
     .chart-container {
-        background: white;
-        padding: 0.5rem;
+        background: transparent;
+        padding: 0.05rem;
         border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        margin-bottom: 0.5rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        margin-bottom: 0.05rem;
         overflow: hidden;
     }
     
